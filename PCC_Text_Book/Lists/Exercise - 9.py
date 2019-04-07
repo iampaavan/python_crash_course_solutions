@@ -439,3 +439,170 @@ admin_1.privileges.privileges = admin_1_privileges
 admin.show_privileges()
 print(f"*****************************************************************************")
 
+
+"""9-9: Battery Upgrade"""
+"""Use the final version of electric_car.py from this section. Add a method to the Battery class
+called upgrade_battery(). This method should check the battery size and set the capacity to 85 if it isn’t already.
+Make an electric car with a default battery size, call get_range() once, and then call get_range() a second time after
+upgrading the battery. You should see an increase in the car’s range."""
+
+
+class Car():
+	"""A simple attempt to represent a car."""
+	
+	def __init__(self, manufacturer, model, year):
+		"""Initialize the attributes to describe a car."""
+		self.manufacturer = manufacturer
+		self.model = model
+		self.year = year
+		self.odometer_reading = 0
+		
+	def get_descriptive_name(self):
+		"""Return a neatly formatted descriptive name."""
+		long_name = f"{self.year} {self.manufacturer} {self.model}"
+		return long_name
+	
+	def read_odometer(self):
+		"""Print a statement showing a car's mileage."""
+		print(f"This car has {self.odometer_reading} miles on it.")
+		
+	def update_odometer(self, mileage):
+		"""Set the odometer reading to the given value. Reject the change
+		if it attempts to roll the odometer back """
+		if mileage >= self.odometer_reading:
+			self.odometer_reading = mileage
+		else:
+			print(f"Cannot roll back odometer reading.")
+			
+	def increment_odometer(self, miles):
+		"""Add the given amount to the odometer reading."""
+		self.odometer_reading += miles
+		
+		
+class Battery():
+	"""A simple attempt to model a battery for an electric car."""
+	
+	def __init__(self, battery_size=60):
+		"""Initialize the battery attribute."""
+		self.battery_size = battery_size
+		
+	def describe_battery(self):
+		"""Print a statement describing the battery size."""
+		print(f"This car has a {self.battery_size}-kWh battery.")
+		
+	def get_range(self):
+		"""Print the statement about the range this battery provides."""
+		
+		if self.battery_size == 60:
+			range = 140
+			
+		elif self.battery_size == 85:
+			range = 185
+			
+		message = f"This car can go approximately {range}"
+		message += " miles on full charge."
+		print(message)
+		
+	def upgrade_battery(self):
+		"""Upgrade the battery if possible"""
+		
+		if self.battery_size == 60:
+			self.battery_size = 85
+			print(f"Upgraded the battery to 85 kWh.")
+			
+		else:
+			print(f"This battery is already upgraded.")
+	
+	
+class ElectricCar(Car):
+	"""Models aspects of a car, specifically to electric vehicles."""
+	
+	def __init__(self, manufacturer, model, year):
+		"""Initialize the attributes of the parent class
+		and initialize the attributes of electric car."""
+		
+		super().__init__(manufacturer, model, year)
+		self.battery = Battery()
+		
+
+print(f"Make an electric car, and check the battery.")
+my_tesla = ElectricCar('telsa', 'model s', 2016)
+my_tesla.battery.describe_battery()
+print(f'****************************************************************************')
+print(f'Upgrade the battery, and check it.')
+my_tesla.battery.upgrade_battery()
+my_tesla.battery.describe_battery()
+print(f'****************************************************************************')
+print(f'Trying to upgrade the battery second time.')
+my_tesla.battery.upgrade_battery()
+my_tesla.battery.describe_battery()
+print(f'****************************************************************************')
+
+
+"""9-13: OrderedDict Rewrite"""
+"""Start with Exercise 6-4 (page 108), where you used a standard dictionary to represent a glossary.
+Rewrite the program using the OrderedDict class and make sure the order of the output matches the order
+in which key-value pairs were added to the dictionary."""
+
+"""Note: In Python 3.6, dictionaries store keys in order. However, this is not guaranteed to work in
+all versions of Python, so you should still use an OrderedDict when you need key-value pairs to be
+stored in a particular order."""
+
+from collections import OrderedDict
+
+glossary = OrderedDict()
+
+glossary['string'] = 'A series of characters.'
+glossary['comment'] = 'A note in a program that the Python interpreter ignores.'
+glossary['list'] = 'A collection of items in a particular order.'
+glossary['loop'] = 'Work through a collection of items, one at a time.'
+glossary['dictionary'] = "A collection of key-value pairs."
+glossary['key'] = 'The first item in a key-value pair in a dictionary.'
+glossary['value'] = 'An item associated with a key in a dictionary.'
+glossary['conditional test'] = 'A comparison between two values.'
+glossary['float'] = 'A numerical value with a decimal component.'
+glossary['boolean expression'] = 'An expression that evaluates to True or False.'
+
+for key, value in glossary.items():
+	print(f"{key.title()}: {value}")
+
+
+"""9-14: Dice"""
+"""The module random contains functions that generate random numbers in a variety of ways.
+The function randint() returns an integer in the range you provide. the following code returns a
+number between 1 and 6: from random import randint --> x = randint(1, 6)"""
+
+from random import randint
+
+
+class Dice():
+	"""Represent a die, which can be rolled."""
+	def __init__(self, sides=6):
+		"""Initialize the die."""
+		self.sides = sides
+		
+	def roll_dice(self):
+		"""return the number between 1 and the number of sides."""
+		return randint(1, self.sides)
+	
+
+d6 = Dice()
+results = []
+
+for num_roll in range(10):
+	result = d6.roll_dice()
+	results.append(result)
+print(f'10 rolls of a 6-sided dice.')
+print(results)
+print(f'*********************************************************************')
+
+d10 = Dice(sides=20)
+my_results = []
+
+for test in range(10):
+	check = d10.roll_dice()
+	my_results.append(check)
+print(f'10 rolls of a 20-sided dice.')
+print(my_results)
+print(f'*********************************************************************')
+
